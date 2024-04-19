@@ -19,11 +19,37 @@ This is a console-based implementation of the game Rock Paper Scissors Lizard Sp
 
 ## How to Play
 
-1. Run the program. If no arguments are provided, the game will use the default moves.
-2. When the game starts, it will display a HMAC of the computer's move, and a list of available moves.
-3. Enter the number corresponding to your move and press enter.
-4. The game will display the result, the computer's move, and the HMAC key.
-5. Then the game will automatically start over. To exit the game, enter `0`.
+#### 1. Run the Program
+
+- Execute the program.
+- If no arguments are provided, the game will use the default moves.
+
+#### 2. Gameplay
+
+Upon starting, the game will:
+
+- Display an HMAC of the computer’s move.
+- Present a list of available moves.
+- Display "0 - exit" for exiting the game.
+- Display "? - help" for displaying a table of all possible move outcomes.
+
+To play:
+
+- Enter the number corresponding to your move.
+- Press enter.
+
+The game will then show:
+
+- The result.
+- The computer’s move.
+- The HMAC key.
+
+Afterward, the game will automatically restart.
+
+#### 3. Exiting the Game
+
+- To exit, simply enter 0.
+
 
 ## Project Structure
 
