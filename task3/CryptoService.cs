@@ -8,7 +8,7 @@ namespace task3
         public byte[] GenerateKey()
         {
             byte[] key = new byte[32];                                      // Create a byte array to hold the key. The key is 32 bytes (256 bits) long.
-            using (var rng = new RNGCryptoServiceProvider())                // Create a new instance of the RNGCryptoServiceProvider class to generate a cryptographically strong random number.
+            using (var rng = RandomNumberGenerator.Create())                // Create a new instance of the RandomNumberGenerator class to generate a cryptographically strong random number.
             {
                 rng.GetBytes(key);                                          // Fill the byte array with a cryptographically strong sequence of random values.
             }

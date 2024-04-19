@@ -31,6 +31,30 @@ namespace task3
             this.inputHandler = new InputHandler();
         }
 
+        public bool AreMovesValid()
+        {
+            // Check if the number of moves is greater than one
+            if (moves.Length <= 1)
+            {
+                outputHandler.DisplayErrorMessage(OutputHandler.ErrorInsufficientMoves);
+                return false;
+            }
+            // Check if the number of moves is odd
+            if (moves.Length % 2 == 0)
+            {
+                outputHandler.DisplayErrorMessage(OutputHandler.ErrorOddMoves);
+                return false;
+            }
+            // Check if the arguments are non-repeating
+            if (new HashSet<string>(moves).Count != moves.Length)
+            {
+                outputHandler.DisplayErrorMessage(OutputHandler.ErrorNonRepeating);
+                return false;
+            }
+            return true;
+        }
+
+
         // Method to start the game
         public void Play()
         {
@@ -41,18 +65,6 @@ namespace task3
                 return;
             }
 
-            // Check if the number of moves is odd
-            if (moves.Length % 2 == 0)
-            {
-                outputHandler.DisplayErrorMessage(OutputHandler.ErrorOddMoves);
-                return;
-            }
-            // Check if the arguments are non-repeating
-            if (new HashSet<string>(moves).Count != moves.Length)
-            {
-                outputHandler.DisplayErrorMessage(OutputHandler.ErrorNonRepeating);
-                return;
-            }
             // Generate a random move for the computer
             int computerMove = random.Next(moves.Length);
             // Generate a key and calculate the HMAC

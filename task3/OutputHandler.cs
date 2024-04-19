@@ -12,10 +12,11 @@ namespace task3
         public const string ErrorOddMoves = "Error: The number of moves must be odd.";
         public const string ErrorNonRepeating = "Error: The arguments must be non-repeating.";
         public const string ErrorInvalidInput = "Invalid input. Please enter a number from the menu.";
+        public const string ErrorInsufficientMoves = "Error: The number of moves must be greater than one.";
 
         public void DisplayHMAC(string hmac)
         {
-            Console.WriteLine($"HMAC: {hmac}");
+            Console.WriteLine($"HMAC: \n{hmac}");
         }
 
         public void DisplayMenu(string[] moves)
@@ -37,7 +38,7 @@ namespace task3
             sb.AppendLine($"Your move: {playerMove}");
             sb.AppendLine($"Computer move: {computerMove}");
             sb.AppendLine(result);
-            sb.AppendLine($"HMAC key: {hmacKey}");
+            sb.AppendLine($"HMAC key: \n{hmacKey}");
             sb.AppendLine();
             Console.Write(sb.ToString());
         }
