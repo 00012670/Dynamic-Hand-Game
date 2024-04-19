@@ -10,70 +10,51 @@ namespace task3
     {
         // Default moves for the game
         private static readonly string[] DefaultMoves = { "rock", "spock", "paper", "lizard", "scissors" };
-        private string[] moves;                     // Array to store the moves for the current game
-        private CryptoService cryptoService;        // CryptoService to generate keys and calculate HMAC
-        private GameRules gameRules;                // GameRules to determine the winner of the game
-        private TableGenerator tableGenerator;      // TableGenerator to generate the game table
-        private Random random;                      // Random to generate random numbers
-        private OutputHandler outputHandler;
-        private InputHandler inputHandler;
+        public string[] Moves { get; private set; }
+        public CryptoService CryptoService { get; private set; }
+        public GameRules GameRules { get; private set; }
+        public TableGenerator TableGenerator { get; private set; }
+        public Random Random { get; private set; }
+        public OutputHandler OutputHandler { get; private set; }
+        public InputHandler InputHandler { get; private set; }
+
 
 
         public GameFlowManager(string[] moves)
         {
             // If no moves are provided, use the default moves
-            this.moves = (moves.Length == 0) ? DefaultMoves : moves;
-            this.cryptoService = new CryptoService();
-            this.gameRules = new GameRules();
-            this.tableGenerator = new TableGenerator(this.gameRules);
-            this.random = new Random();
-            this.outputHandler = new OutputHandler();
-            this.inputHandler = new InputHandler();
+            this.Moves = (moves.Length == 0) ? DefaultMoves : moves;
+            this.CryptoService = new CryptoService();
+            this.GameRules = new GameRules();
+            this.TableGenerator = new TableGenerator(this.GameRules);
+            this.Random = new Random();
+            this.OutputHandler = new OutputHandler();
+            this.InputHandler = new InputHandler();
         }
-
-        public bool AreMovesValid()
-        {
-            // Check if the number of moves is greater than one
-            if (moves.Length <= 1)
-            {
-                outputHandler.DisplayErrorMessage(OutputHandler.ErrorInsufficientMoves);
-                return false;
-            }
-            // Check if the number of moves is odd
-            if (moves.Length % 2 == 0)
-            {
-                outputHandler.DisplayErrorMessage(OutputHandler.ErrorOddMoves);
-                return false;
-            }
-            // Check if the arguments are non-repeating
-            if (new HashSet<string>(moves).Count != moves.Length)
-            {
-                outputHandler.DisplayErrorMessage(OutputHandler.ErrorNonRepeating);
-                return false;
-            }
-            return true;
-        }
-
 
         // Method to start the game
         public void Play()
         {
-            // Check if the objects are initialized
-            if (moves == null || outputHandler == null || random == null || cryptoService == null || inputHandler == null)
+            if (!GameValidator.AreMovesValid(Moves))
             {
-                Console.WriteLine("One or more required objects are not initialized.");
+                return;
+            }
+
+            // Check if the objects are initialized
+            if (!GameValidator.AreMovesValid(Moves) || !GameValidator.AreObjectsInitialized(this))
+            {
                 return;
             }
 
             // Generate a random move for the computer
-            int computerMove = random.Next(moves.Length);
+            int computerMove = Random.Next(Moves.Length);
             // Generate a key and calculate the HMAC
-            byte[] key = cryptoService.GenerateKey();
-            string hmacString = cryptoService.CalculateHMAC(key, moves[computerMove]);
+            byte[] key = CryptoService.GenerateKey();
+            string hmacString = CryptoService.CalculateHMAC(key, Moves[computerMove]);
             // Display the HMAC and the menu
-            outputHandler.DisplayHMAC(hmacString);
-            outputHandler.DisplayMenu(moves);
-            string input = inputHandler.GetUserMove();
+            OutputHandler.DisplayHMAC(hmacString);
+            OutputHandler.DisplayMenu(Moves);
+            string input = InputHandler.GetUserMove();
             ProcessInput(input, computerMove, key);
         }
 
@@ -82,16 +63,16 @@ namespace task3
             // If the input is "?", generate the game table
             if (input == "?")
             {
-                tableGenerator.GenerateTable(moves);
+                TableGenerator.GenerateTable(Moves);
                 return;
             }
             int playerMove;
 
             // Check if the input is valid
-            if (!inputHandler.IsValidInput(input, out playerMove, moves.Length))
+            if (!InputHandler.IsValidInput(input, out playerMove, Moves.Length))
             {
                 Console.WriteLine();
-                outputHandler.DisplayErrorMessage(OutputHandler.ErrorInvalidInput);
+                OutputHandler.DisplayErrorMessage(OutputHandler.ErrorInvalidInput);
                 Console.WriteLine();
                 return;
             }
@@ -101,9 +82,9 @@ namespace task3
                 Environment.Exit(0);
             }
             // Calculate the result of the game
-            string result = gameRules.DetermineWinner(computerMove, playerMove, moves.Length);
+            string result = GameRules.DetermineWinner(computerMove, playerMove, Moves.Length);
             // Display the result of the game, the computer's move, and the original key
-            outputHandler.DisplayGameResult(result, moves[playerMove - 1], moves[computerMove - 1], cryptoService.BytesToString(key));
+            OutputHandler.DisplayGameResult(result, Moves[playerMove - 1], Moves[computerMove - 1], CryptoService.BytesToString(key));
 
         }
     }
