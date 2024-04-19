@@ -15,28 +15,15 @@ namespace task3
                 return "Draw";
             }
 
-            int halfTotalMoves = totalMoves / 2;
-            if (computerMove > playerMove)
+            int difference = (totalMoves + computerMove - playerMove) % totalMoves;
+
+            if (difference % 2 == 1)
             {
-                if (computerMove - playerMove <= halfTotalMoves)
-                {
-                    return "Computer wins";
-                }
-                else
-                {
-                    return "Player wins";
-                }
+                return "Computer wins";
             }
             else
             {
-                if (playerMove - computerMove <= halfTotalMoves)
-                {
-                    return "Player wins";
-                }
-                else
-                {
-                    return "Computer wins";
-                }
+                return "Player wins";
             }
         }
     }

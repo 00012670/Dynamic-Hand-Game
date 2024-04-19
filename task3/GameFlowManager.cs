@@ -9,7 +9,7 @@ namespace task3
     public class GameFlowManager
     {
         // Default moves for the game
-        private static readonly string[] DefaultMoves = { "rock", "spock", "paper", "lizard", "scissors" };
+        private static readonly string[] DefaultMoves = { "rock", "Spock",  "paper", "lizard", "scissors" };
         public string[] Moves { get; private set; }
         public CryptoService CryptoService { get; private set; }
         public GameRules GameRules { get; private set; }
@@ -17,7 +17,6 @@ namespace task3
         public Random Random { get; private set; }
         public OutputHandler OutputHandler { get; private set; }
         public InputHandler InputHandler { get; private set; }
-
 
 
         public GameFlowManager(string[] moves)
@@ -46,16 +45,17 @@ namespace task3
                 return;
             }
 
-            // Generate a random move for the computer
-            int computerMove = Random.Next(Moves.Length);
+            // Generate a random move for the computer, starting from 1 instead of 0
+            int computerMove = Random.Next(1, Moves.Length + 1);
             // Generate a key and calculate the HMAC
             byte[] key = CryptoService.GenerateKey();
-            string hmacString = CryptoService.CalculateHMAC(key, Moves[computerMove]);
+            string hmacString = CryptoService.CalculateHMAC(key, Moves[computerMove - 1]);
             // Display the HMAC and the menu
             OutputHandler.DisplayHMAC(hmacString);
             OutputHandler.DisplayMenu(Moves);
             string input = InputHandler.GetUserMove();
             ProcessInput(input, computerMove, key);
+
         }
 
         public void ProcessInput(string input, int computerMove, byte[] key)
@@ -85,7 +85,6 @@ namespace task3
             string result = GameRules.DetermineWinner(computerMove, playerMove, Moves.Length);
             // Display the result of the game, the computer's move, and the original key
             OutputHandler.DisplayGameResult(result, Moves[playerMove - 1], Moves[computerMove - 1], CryptoService.BytesToString(key));
-
         }
     }
 }
