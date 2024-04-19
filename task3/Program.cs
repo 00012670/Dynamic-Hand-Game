@@ -9,7 +9,11 @@ internal class Program
         var game = new GameFlowManager(args);
         while (true)
         {
-            game.Play();
+            bool gamePlayed = game.Play();
+            if (!gamePlayed)
+            {
+                break;
+            }
         }
     }
 }

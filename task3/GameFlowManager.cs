@@ -9,9 +9,9 @@ namespace task3
     public class GameFlowManager
     {
         // Default moves for the game
-        // private static readonly string[] DefaultMoves = { "rock",   "paper",  "scissors"};
-         private static readonly string[] DefaultMoves = { "rock", "Spock", "paper", "lizard", "scissors" };
-        // private static readonly string[] DefaultMoves = { "rock", "paper", "scissors" , "4th", "5th", "6th", "7th"};
+        // private static readonly string[] DefaultMoves = { "Rock",   "Paper",  "Scissors"};
+         private static readonly string[] DefaultMoves = { "Rock", "Spock", "Paper", "Lizard", "Scissors" };
+        // private static readonly string[] DefaultMoves = { "Rock", "Paper", "Scissors" , "4th", "5th", "6th", "7th"};
 
         public string[] Moves { get; private set; }
         public CryptoService CryptoService { get; private set; }
@@ -40,15 +40,16 @@ namespace task3
         }
 
         // Method to start the game
-        public void Play()
+        public bool Play()
         {
             if (!IsValidGame())
             {
-                return;
+                return false;
             }
             PlayRound();
-
+            return true;
         }
+
 
         private void PlayRound()
         {
