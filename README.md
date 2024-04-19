@@ -19,11 +19,11 @@ The game was popularized by the TV show "The Big Bang Theory" and is also known 
 
 ## Code Structure
 
-- `GameFlowManager`: --> controls the flow of the game.
-- `CryptoService`:   --> responsible for generating keys and calculating HMAC.
-- `GameRules`:       --> determines the winner of the game.
-- `TableGenerator`:  --> generates the game table.
-- `OutputHandler`:   --> handles all output operations for the game.
-- `InputHandler`:    --> handles all input operations for the game.
+- `GameFlowManager` --> controls the flow of the game.
+- `CryptoService`   --> responsible for generating keys and calculating HMAC.
+- `GameRules`       --> determines the winner of the game.
+- `TableGenerator`  --> generates the game table.
+- `OutputHandler`   --> handles all output operations for the game.
+- `InputHandler`    --> handles all input operations for the game.
 
 
