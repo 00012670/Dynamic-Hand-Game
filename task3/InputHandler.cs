@@ -11,7 +11,6 @@ namespace task3
         public string GetUserMove()
         {
             Console.Write("Enter your move: ");
-            // Read the user's input and return it, or an empty string if the input is null
             return Console.ReadLine() ?? string.Empty;
         }
 

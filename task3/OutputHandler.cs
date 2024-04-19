@@ -37,7 +37,7 @@ namespace task3
             sb.AppendLine();
             sb.AppendLine($"Your move: {playerMove}");
             sb.AppendLine($"Computer move: {computerMove}");
-            sb.AppendLine(result);
+            sb.AppendLine($"Game result: {result}");
             sb.AppendLine($"HMAC key: \n{hmacKey}");
             sb.AppendLine();
             Console.Write(sb.ToString());

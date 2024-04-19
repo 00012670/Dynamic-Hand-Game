@@ -9,7 +9,10 @@ namespace task3
     public class GameFlowManager
     {
         // Default moves for the game
-        private static readonly string[] DefaultMoves = { "rock", "Spock",  "paper", "lizard", "scissors" };
+        // private static readonly string[] DefaultMoves = { "rock",   "paper",  "scissors"};
+         private static readonly string[] DefaultMoves = { "rock", "Spock", "paper", "lizard", "scissors" };
+        // private static readonly string[] DefaultMoves = { "rock", "paper", "scissors" , "4th", "5th", "6th", "7th"};
+
         public string[] Moves { get; private set; }
         public CryptoService CryptoService { get; private set; }
         public GameRules GameRules { get; private set; }
@@ -31,36 +34,35 @@ namespace task3
             this.InputHandler = new InputHandler();
         }
 
+        private bool IsValidGame()
+        {
+            return GameValidator.AreMovesValid(Moves) && GameValidator.AreObjectsInitialized(this);
+        }
+
         // Method to start the game
         public void Play()
         {
-            if (!GameValidator.AreMovesValid(Moves))
+            if (!IsValidGame())
             {
                 return;
             }
+            PlayRound();
 
-            // Check if the objects are initialized
-            if (!GameValidator.AreMovesValid(Moves) || !GameValidator.AreObjectsInitialized(this))
-            {
-                return;
-            }
+        }
 
-            // Generate a random move for the computer, starting from 1 instead of 0
+        private void PlayRound()
+        {
             int computerMove = Random.Next(1, Moves.Length + 1);
-            // Generate a key and calculate the HMAC
             byte[] key = CryptoService.GenerateKey();
             string hmacString = CryptoService.CalculateHMAC(key, Moves[computerMove - 1]);
-            // Display the HMAC and the menu
             OutputHandler.DisplayHMAC(hmacString);
             OutputHandler.DisplayMenu(Moves);
             string input = InputHandler.GetUserMove();
             ProcessInput(input, computerMove, key);
-
         }
 
         public void ProcessInput(string input, int computerMove, byte[] key)
         {
-            // If the input is "?", generate the game table
             if (input == "?")
             {
                 TableGenerator.GenerateTable(Moves);
@@ -81,9 +83,7 @@ namespace task3
             {
                 Environment.Exit(0);
             }
-            // Calculate the result of the game
-            string result = GameRules.DetermineWinner(computerMove, playerMove, Moves.Length);
-            // Display the result of the game, the computer's move, and the original key
+            string result = GameRules.DetermineWinner(computerMove, playerMove, Moves.Length);    // Calculate the result of the game
             OutputHandler.DisplayGameResult(result, Moves[playerMove - 1], Moves[computerMove - 1], CryptoService.BytesToString(key));
         }
     }

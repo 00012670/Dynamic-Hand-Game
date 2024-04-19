@@ -10,20 +10,20 @@ namespace task3
     {
         public string DetermineWinner(int computerMove, int playerMove, int totalMoves)
         {
-            if (computerMove == playerMove)
+            int p = totalMoves / 2;
+            int difference = (computerMove - playerMove + p + totalMoves) % totalMoves;
+
+            if (difference == p) // Check if the difference is equal to half of the total moves
             {
                 return "Draw";
             }
-
-            int difference = (totalMoves + computerMove - playerMove) % totalMoves;
-
-            if (difference % 2 == 1)
+            else if (difference <= p)
             {
-                return "Computer wins";
+                return "Win";
             }
             else
             {
-                return "Player wins";
+                return "Lose";
             }
         }
     }
